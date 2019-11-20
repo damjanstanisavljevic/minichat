@@ -9,7 +9,7 @@ namespace http
         http_version()
             : version("HTTP/1.1")
         {}
-        
+
         http_version(int major, int minor)
             : version("HTTP/")
         {
@@ -24,4 +24,10 @@ namespace http
 
         std::string version;
     };
+
+    template<typename OStream>
+    OStream & operator<<(OStream & out, const http_version & version)
+    {
+        return out << version.version;
+    }
 } // namespace http
