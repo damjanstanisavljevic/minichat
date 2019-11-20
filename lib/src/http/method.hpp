@@ -4,7 +4,7 @@ namespace http
 {
     struct http_method
     {
-        enum method_type
+        enum class method_type
         {
             DELETE,
             GET,
@@ -24,4 +24,24 @@ namespace http
 
         method_type method;
     };
+
+    template <typename OStream>
+    OStream & operator<<(OStream & out, const http_method & method)
+    {
+        switch (method.method)
+        {
+            case http_method::method_type::DELETE:
+                return out << "DELETE";
+            case http_method::method_type::GET:
+                return out << "GET";
+            case http_method::method_type::OPTIONS:
+                return out << "OPTIONS";
+            case http_method::method_type::PATCH:
+                return out << "PATCH";
+            case http_method::method_type::POST:
+                return out << "POST";
+            default: // case http_method::method_type::PUT:
+                return out << "PUT";
+        }
+    }
 } // namespace http
