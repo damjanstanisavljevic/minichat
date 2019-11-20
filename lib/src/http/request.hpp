@@ -22,6 +22,13 @@ namespace http
             , body(std::forward<HttpBody>(body))
         {}
 
+        template<typename ... HttpHeaderField>
+        http_request & add_header(HttpHeaderField && ... header_field)
+        {
+            headers.add_header(std::forward<HttpHeaderField>(header_field)...);
+            return *this;
+        }
+
         HttpMethod  method;
         HttpUri     uri;
         HttpHeaders headers;
