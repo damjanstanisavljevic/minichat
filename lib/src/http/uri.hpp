@@ -18,4 +18,4 @@ namespace http
 
         std::string uri;
     };
-}
+} // namespace http
