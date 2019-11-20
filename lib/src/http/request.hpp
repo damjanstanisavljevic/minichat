@@ -2,6 +2,16 @@
 
 namespace http
 {
+    enum class http_method
+    {
+        GET,
+        POST,
+        PATCH,
+        PUT,
+        DELETE,
+        OPTIONS
+    };
+    
     template <typename HttpMethod,
               typename HttpUri,
               typename HttpHeaders,
