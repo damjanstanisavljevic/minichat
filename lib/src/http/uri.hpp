@@ -18,4 +18,10 @@ namespace http
 
         std::string uri;
     };
+
+    template<typename OStream>
+    OStream & operator<<(OStream & out, const http_uri & uri)
+    {
+        return out << uri.uri;
+    }
 } // namespace http
