@@ -1,17 +1,9 @@
 #pragma once
 
+#include <utility>
+
 namespace http
-{
-    enum class http_method
-    {
-        GET,
-        POST,
-        PATCH,
-        PUT,
-        DELETE,
-        OPTIONS
-    };
-    
+{   
     template <typename HttpMethod,
               typename HttpUri,
               typename HttpHeaders,
@@ -22,7 +14,7 @@ namespace http
         http_request() = default;
 
         http_request(HttpMethod method, HttpUri uri, HttpHeaders headers,
-                     HttpBody body, HttpVersion version = "HTTP/1.1")
+                     HttpBody body, HttpVersion version)
             : method(method)
             , uri(uri)
             , headers(headers)
@@ -36,4 +28,4 @@ namespace http
         HttpBody    body;
         HttpVersion version;
     };
-}
+} // namespace http
