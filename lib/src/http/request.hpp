@@ -13,13 +13,13 @@ namespace http
     {
         http_request() = default;
 
-        http_request(HttpMethod method, HttpUri uri, HttpHeaders headers,
-                     HttpBody body, HttpVersion version)
-            : method(method)
-            , uri(uri)
-            , headers(headers)
-            , version(version)
-            , body(body)
+        http_request(HttpMethod && method, HttpUri && uri, HttpHeaders && headers,
+                     HttpBody && body, HttpVersion && version)
+            : method(std::forward<HttpMethod>(method))
+            , uri(std::forward<HttpUri>(uri))
+            , headers(std::forward<HttpHeaders>(headers))
+            , version(std::forward<HttpVersion>(version))
+            , body(std::forward<HttpBody>(body))
         {}
 
         HttpMethod  method;
