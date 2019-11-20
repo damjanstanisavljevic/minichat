@@ -12,6 +12,7 @@ namespace http
         http_headers & add_header(std::string && name, std::string && field)
         {
             headers[name] = field;
+            return *this;
         }
 
     private:
