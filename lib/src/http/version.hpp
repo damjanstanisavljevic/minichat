@@ -6,6 +6,10 @@ namespace http
 {
     struct http_version
     {
+        http_version()
+            : version("HTTP/1.1")
+        {}
+        
         http_version(int major, int minor)
             : version("HTTP/")
         {
@@ -20,4 +24,4 @@ namespace http
 
         std::string version;
     };
-}
+} // namespace http
