@@ -15,7 +15,18 @@ namespace http
             return *this;
         }
 
+        template<typename OStream>
+        friend OStream & operator<<(OStream & out, const http_headers & headers);
+
     private:
         std::map<std::string, std::string> headers;
     };
+
+    template<typename OStream>
+    OStream & operator<<(OStream & out, const http_headers & headers)
+    {
+        for (auto const & [name, field] : headers.headers)
+            out << name << ": " << field << "\r\n";
+        return out;
+    }
 } // namespace http
