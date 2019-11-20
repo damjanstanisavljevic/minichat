@@ -2,13 +2,18 @@
 
 #include <utility>
 
+#include "headers.hpp"
+#include "method.hpp"
+#include "uri.hpp"
+#include "version.hpp"
+
 namespace http
 {   
-    template <typename HttpMethod,
-              typename HttpUri,
-              typename HttpHeaders,
-              typename HttpBody,
-              typename HttpVersion>
+    template <typename HttpMethod  = http_method,
+              typename HttpUri     = http_uri,
+              typename HttpHeaders = http_headers,
+              typename HttpBody    = std::string,
+              typename HttpVersion = http_version>
     struct http_request
     {
         http_request() = default;
