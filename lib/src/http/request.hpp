@@ -40,4 +40,26 @@ namespace http
         HttpBody    body;
         HttpVersion version;
     };
+
+    template<typename OStream, typename HttpMethod,
+                               typename HttpUri,
+                               typename HttpBody,
+                               typename HttpHeaders,
+                               typename HttpVersion>
+    OStream & operator<<(OStream & out, http_request<HttpMethod,
+                                                      HttpUri,
+                                                      HttpBody,
+                                                      HttpHeaders,
+                                                      HttpVersion> const & request)
+    {
+        // Status Line
+        out << request.method << ' ' << request.uri
+                              << ' ' << request.version << "\r\n";
+
+        // Headers
+        out << request.headers << "\r\n";
+
+        //Body
+        out << request.body;
+    }
 } // namespace http
