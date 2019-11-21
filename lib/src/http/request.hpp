@@ -1,6 +1,7 @@
 #pragma once
 
 #include <utility>
+#include "../../include/json.hpp"
 
 #include "headers.hpp"
 #include "method.hpp"
@@ -12,7 +13,7 @@ namespace http
     template <typename HttpMethod  = http_method,
               typename HttpUri     = http_uri,
               typename HttpHeaders = http_headers,
-              typename HttpBody    = std::string,
+              typename HttpBody    = nlohmann::json,
               typename HttpVersion = http_version>
     struct http_request
     {
