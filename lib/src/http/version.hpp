@@ -8,19 +8,23 @@ namespace http
     struct http_version
     {
         http_version()
-            : version("HTTP/1.1")
+            : version{"HTTP/1.1"}
         {}
 
         http_version(int major, int minor)
-            : version("HTTP/")
+            : version{"HTTP/"}
         {
             version += major;
             version.push_back('.');
             version += minor;
         }
 
-        http_version(std::string s)
-            : version(s)
+        explicit http_version(std::string const & s)
+            : version{s}
+        {}
+
+        explicit http_version(char const * s)
+            : version{s}
         {}
 
         bool is_set() const
