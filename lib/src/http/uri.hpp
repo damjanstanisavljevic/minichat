@@ -12,9 +12,19 @@ namespace http
             : uri{u}
         {}
 
-        explicit http_uri(std::string u)
+        explicit http_uri(std::string const & u)
             : uri{u}
         {}
+
+        void operator=(const char *u)
+        {
+            uri = u;
+        }
+
+        void operator=(std::string const & u)
+        {
+            uri = u;
+        }
 
         bool is_set() const
         {
