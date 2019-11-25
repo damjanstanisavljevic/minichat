@@ -31,17 +31,24 @@ namespace http
         switch (method.method)
         {
             case http_method::method_type::DELETE:
-                return out << "DELETE";
+                out << "DELETE";
+                break;
             case http_method::method_type::GET:
-                return out << "GET";
+                out << "GET";
+                break;
             case http_method::method_type::OPTIONS:
-                return out << "OPTIONS";
+                out << "OPTIONS";
+                break;
             case http_method::method_type::PATCH:
-                return out << "PATCH";
+                out << "PATCH";
+                break;
             case http_method::method_type::POST:
-                return out << "POST";
+                out << "POST";
+                break;
             default: // case http_method::method_type::PUT:
-                return out << "PUT";
+                out << "PUT";
+                break;
         }
+        return out;
     }
 } // namespace http
