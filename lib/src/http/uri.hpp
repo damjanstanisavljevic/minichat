@@ -8,12 +8,12 @@ namespace http
     {
         http_uri() = default;
 
-        http_uri(const char *uri)
-            : uri(uri)
+        explicit http_uri(const char *u)
+            : uri{u}
         {}
 
-        http_uri(std::string uri)
-            : uri(uri)
+        explicit http_uri(std::string u)
+            : uri{u}
         {}
 
         bool is_set() const
