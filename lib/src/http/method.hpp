@@ -22,6 +22,27 @@ namespace http
             : method(type)
         {}
 
+        void operator=(method_type type)
+        {
+            method = type;
+        }
+
+        void operator=(std::string const & type)
+        {
+            if (type == "DELETE")
+                method = method_type::DELETE;
+            else if (type == "GET")
+                method = method_type::GET;
+            else if (type == "OPTIONS")
+                method = method_type::OPTIONS;
+            else if (type == "PATCH")
+                method = method_type::PATCH;
+            else if (type == "POST")
+                method = method_type::POST;
+            else if (type == "PUT")
+                method = method_type::PUT;
+        }
+
         method_type method;
     };
 

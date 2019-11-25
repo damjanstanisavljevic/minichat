@@ -11,6 +11,8 @@
 
 namespace http
 {
+    using method_type = http_method::method_type;
+    
     namespace detail
     {
         template<typename T>
