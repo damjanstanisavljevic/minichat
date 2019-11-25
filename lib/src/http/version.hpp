@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <regex>
 
 namespace http
 {
@@ -21,6 +22,12 @@ namespace http
         http_version(std::string s)
             : version(s)
         {}
+
+        bool is_set() const
+        {
+            return std::regex_match(version,
+                                    std::regex("(HTTP/)([0-9])(.)([0-9])"));
+        }
 
         std::string version;
     };
