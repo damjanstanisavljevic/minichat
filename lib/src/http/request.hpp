@@ -3,11 +3,11 @@
 #include <type_traits>
 #include <utility>
 
-#include "../../include/json.hpp"
 #include "headers.hpp"
 #include "method.hpp"
 #include "uri.hpp"
 #include "version.hpp"
+#include "body.hpp"
 
 namespace http
 {
@@ -49,7 +49,7 @@ namespace http
     template <typename HttpMethod  = http_method,
               typename HttpUri     = http_uri,
               typename HttpHeaders = http_headers,
-              typename HttpBody    = nlohmann::json,
+              typename HttpBody    = http_body,
               typename HttpVersion = http_version>
     struct http_request
     {
