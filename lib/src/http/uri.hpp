@@ -16,6 +16,11 @@ namespace http
             : uri(uri)
         {}
 
+        bool is_set() const
+        {
+            return uri != "";
+        }
+
         std::string uri;
     };
 
