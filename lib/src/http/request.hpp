@@ -12,7 +12,7 @@
 namespace http
 {
     using method_type = http_method::method_type;
-    
+
     namespace detail
     {
         template<typename T>
@@ -65,8 +65,15 @@ namespace http
             : method(std::forward<HttpMethod>(method))
             , uri(std::forward<HttpUri>(uri))
             , headers(std::forward<HttpHeaders>(headers))
-            , version(std::forward<HttpVersion>(version))
             , body(std::forward<HttpBody>(body))
+            , version(std::forward<HttpVersion>(version))
+        {}
+
+        template<typename Method,
+                 typename Uri>
+        http_request(Method && method, Uri && uri)
+            : method(std::forward<Method>(method))
+            , uri(std::forward<Uri>(uri))
         {}
 
         template<typename ... HttpHeaderField>
