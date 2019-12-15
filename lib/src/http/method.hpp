@@ -4,6 +4,7 @@ namespace http
 {
     struct http_method
     {
+        // enum of all supported method_types
         enum class method_type
         {
             DELETE,
@@ -14,42 +15,61 @@ namespace http
             PUT
         };
 
-        http_method()
-            : method(method_type::GET)
+        // member varialbes
+        method_type _method;
+
+        // deafailt constructor deafault initalizes to method_type::GET
+        explicit http_method()
+            : _method{method_type::GET}
         {}
 
+        // constructor that takes http_method::method_type as argument
         http_method(method_type type)
-            : method(type)
+            : _method{type}
         {}
 
-        void operator=(method_type type)
+        // assigment operator that assignes from the http_method::method_type
+        http_method& operator=(method_type type)
         {
-            method = type;
+            _method = type;
+            return *this;
         }
 
+        // assigment operator that assignes from the std::string
         void operator=(std::string const & type)
         {
             if (type == "DELETE")
-                method = method_type::DELETE;
+                _method = method_type::DELETE;
             else if (type == "GET")
-                method = method_type::GET;
+                _method = method_type::GET;
             else if (type == "OPTIONS")
-                method = method_type::OPTIONS;
+                _method = method_type::OPTIONS;
             else if (type == "PATCH")
-                method = method_type::PATCH;
+                _method = method_type::PATCH;
             else if (type == "POST")
-                method = method_type::POST;
+                _method = method_type::POST;
             else if (type == "PUT")
-                method = method_type::PUT;
+                _method = method_type::PUT;
         }
 
-        method_type method;
+        // rule of five
+        explicit http_method(http_method const &) = default;
+        explicit http_method(http_method &&) = default;
+
+        http_method& operator=(http_method const &) = default;
+        http_method& operator=(http_method &&) = default;
+
+        // deafult virtual destructor in case of inheritance
+        virtual ~http_method() = default;
+
     };
 
+
+    // operator<< for printing http_method
     template <typename OStream>
-    OStream & operator<<(OStream & out, const http_method & method)
+    OStream & operator<<(OStream & out, http_method const & method)
     {
-        switch (method.method)
+        switch (method._method)
         {
             case http_method::method_type::DELETE:
                 out << "DELETE";

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <type_traits>
+#include <experimental/type_traits>
 #include <utility>
 
 #include "headers.hpp"
@@ -15,36 +16,23 @@ namespace http
 
     namespace detail
     {
-        template<typename T>
-        class has_is_set
-        {
-        private:
-            template<typename U, bool (U::*)() const> struct check;
-            template<typename U> static char func(check<U, &U::is_set> *);
-            template<typename U> static int  func(...);
-        public:
-            typedef has_is_set type;
-            enum { value = sizeof(func<T>(0)) == sizeof(char) };
-        };
 
+        // helper alias for is_set method
         template<typename T>
-        bool is_set_if_exists(T const & o, std::true_type)
-        {
-            return o.is_set();
-        }
+        using is_set_method = decltype(&T::is_set);
 
+        // if the type T has method is_set, returns the result of the call of that method
+        // if T does not have a method is_set, than it's assumed that there is no need for any
+        // special checks so true is returned by default
         template<typename T>
-        constexpr bool is_set_if_exists(T const &, std::false_type)
+        auto is_set(T const & o)
         {
+            if constexpr (std::experimental::is_detected_v<is_set_method,T>)
+            {
+                return o.is_set();
+            }
+
             return true;
-        }
-
-        template<typename T>
-        bool is_set(T const & o)
-        {
-            return is_set_if_exists(o,
-                    std::integral_constant<bool,
-                        has_is_set<typename std::decay_t<T>>::value>());
         }
     } // namespace detail
 
@@ -55,50 +43,69 @@ namespace http
               typename HttpVersion = http_version>
     struct http_request
     {
-        http_request() = default;
 
-        http_request(HttpMethod  && method,
-                     HttpUri     && uri,
-                     HttpHeaders && headers,
-                     HttpBody    && body,
-                     HttpVersion && version)
-            : method(std::forward<HttpMethod>(method))
-            , uri(std::forward<HttpUri>(uri))
-            , headers(std::forward<HttpHeaders>(headers))
-            , body(std::forward<HttpBody>(body))
-            , version(std::forward<HttpVersion>(version))
+        // member variables
+        HttpMethod  _method;
+        HttpUri     _uri;
+        HttpHeaders _headers;
+        HttpBody    _body;
+        HttpVersion _version;
+
+        // constructor that takes all of the parameters
+        explicit http_request(HttpMethod  && method,
+                              HttpUri     && uri,
+                              HttpHeaders && headers,
+                              HttpBody    && body,
+                              HttpVersion && version)
+            : _method{std::forward<HttpMethod>(method)}
+            , _uri{std::forward<HttpUri>(uri)}
+            , _headers{std::forward<HttpHeaders>(headers)}
+            , _body{std::forward<HttpBody>(body)}
+            , _version{std::forward<HttpVersion>(version)}
         {}
 
+        // constructor that only takes method and uri
         template<typename Method,
                  typename Uri>
-        http_request(Method && method, Uri && uri)
-            : method(std::forward<Method>(method))
-            , uri(std::forward<Uri>(uri))
+        explicit http_request(Method && method, Uri && uri)
+            : _method(std::forward<Method>(method))
+            , _uri(std::forward<Uri>(uri))
         {}
 
+        // rule of five and default constructor
+        explicit http_request() = default;
+        explicit http_request(http_request const &) = default;
+        explicit http_request(http_request &&) = default;
+
+        http_request& operator=(http_request const &) = default;
+        http_request& operator=(http_request &&) = default;
+
+        // defaulted virtual destructor in case of inheritance
+        virtual ~http_request() = default;
+
+        // method that constructs a new header from the passed arguments
         template<typename ... HttpHeaderField>
-        http_request & add_header(HttpHeaderField && ... header_field)
+        http_request& add_header(HttpHeaderField && ... header_field)
         {
-            headers.add_header(std::forward<HttpHeaderField>(header_field)...);
+            _headers.add_header(std::forward<HttpHeaderField>(header_field)...);
             return *this;
         }
 
+        // check if all of the fields are set
         bool is_set() const
         {
-            return detail::is_set(method)
-                && detail::is_set(uri)
-                && detail::is_set(version)
-                && detail::is_set(headers)
-                && detail::is_set(body);
+            return detail::is_set(_method)
+                && detail::is_set(_uri)
+                && detail::is_set(_version)
+                && detail::is_set(_headers)
+                && detail::is_set(_body);
         }
 
-        HttpMethod  method;
-        HttpUri     uri;
-        HttpHeaders headers;
-        HttpBody    body;
-        HttpVersion version;
     };
 
+
+    // operator<< for printing http_request to ostream
+    // since all fields are public there is no need for this function to be friend
     template<typename OStream, typename HttpMethod,
                                typename HttpUri,
                                typename HttpHeaders,
@@ -114,14 +121,14 @@ namespace http
             return out;
 
         // Status Line
-        out << req.method << ' ' << req.uri
-                          << ' ' << req.version << "\r\n";
+        out << req._method << ' ' << req._uri
+                           << ' ' << req._version << "\r\n";
 
         // Headers
-        out << req.headers << "\r\n";
+        out << req._headers << "\r\n";
 
         //Body
-        out << req.body;
+        out << req._body;
         
         return out;
     }
