@@ -68,8 +68,8 @@ namespace http
         template<typename Method,
                  typename Uri>
         explicit http_request(Method && method, Uri && uri)
-            : _method(std::forward<Method>(method))
-            , _uri(std::forward<Uri>(uri))
+            : _method{std::forward<Method>(method)}
+            , _uri{std::forward<Uri>(uri)}
         {}
 
         // rule of five and default constructor
