@@ -5,7 +5,7 @@
 TEST (BasicRequest, Default)
 {
     http::http_request<> req;
-    req.uri.uri = "http://test.com/basic";
+    req._uri._uri = "http://test.com/basic";
     test_eq(req, "GET http://test.com/basic HTTP/1.1\r\n\r\n");
 }
 
@@ -18,28 +18,28 @@ TEST (BasicRequest, ReqNotSet)
 TEST (BasicRequest, SetMethodEnum)
 {
     http::http_request<> req;
-    req.method = http::method_type::DELETE;
-    req.uri.uri = "http://test.com/basic";
+    req._method = http::method_type::DELETE;
+    req._uri._uri = "http://test.com/basic";
     test_eq(req, "DELETE http://test.com/basic HTTP/1.1\r\n\r\n");
 }
 
 TEST (BasicRequest, SetMethodString)
 {
     http::http_request<> req;
-    req.method = "OPTIONS";
-    req.uri.uri = "http://test.com/basic";
+    req._method = "OPTIONS";
+    req._uri._uri = "http://test.com/basic";
     test_eq(req, "OPTIONS http://test.com/basic HTTP/1.1\r\n\r\n");
 }
 
 TEST (BasicRequest, WrongVersion)
 {
     http::http_request<> req;
-    req.version.version = "HTTP/1.10";
+    req._version._version = "HTTP/1.10";
     test_eq(req, "");
-    req.version.version = "";
+    req._version._version = "";
     test_eq(req, "");
-    req.version.version = "HTTP/11";
+    req._version._version = "HTTP/11";
     test_eq(req, "");
-    req.version.version = "1.1";
+    req._version._version = "1.1";
     test_eq(req, "");
 }
