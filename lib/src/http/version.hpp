@@ -60,6 +60,7 @@ namespace http
     template<typename OStream>
     OStream & operator<<(OStream & out, http_version const & version)
     {
-        return out << version._version;
+        out << version._version;
+        return out;
     }
 } // namespace http
