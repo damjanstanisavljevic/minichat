@@ -51,6 +51,13 @@ namespace http
             return request_line;
         }
 
+        http_body parse_body(std::string const & body)
+        {
+            if (body == "")
+                return http_body();
+            return http_body(body);
+        }
+
         http_version parse_version(std::string const & version)
         {
             if (!std::regex_match(version,
@@ -105,7 +112,7 @@ namespace http
         return http_request<>(detail::parse_method(request_line[0]),
                               http_uri(request_line[1]),
                               std::move(headers),
-                              http_body(message),
+                              detail::parse_body(message),
                               detail::parse_version(request_line[2]));
     }
 } // namespcae http
