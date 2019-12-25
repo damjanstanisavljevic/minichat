@@ -1,6 +1,6 @@
 #include "http/request.hpp"
 
-#include "../misc.hpp"
+#include "../test_utility.hpp"
 
 TEST (ConstructRequest, Default)
 {

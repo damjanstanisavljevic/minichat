@@ -1,6 +1,6 @@
 #include "http/response.hpp"
 
-#include "../misc.hpp"
+#include "../test_utility.hpp"
 
 TEST (BasicResponse, Default)
 {
