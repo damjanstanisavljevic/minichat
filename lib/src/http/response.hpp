@@ -1,3 +1,5 @@
+#pragma once
+
 #include "body.hpp"
 #include "code.hpp"
 #include "headers.hpp"
