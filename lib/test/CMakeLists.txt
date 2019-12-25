@@ -10,6 +10,7 @@ find_package(GTest)
 add_executable(testsuite ${CMAKE_SOURCE_DIR}/
     test_request/test_basic_request.cpp
     test_request/test_construct_request.cpp
+    test_request/test_parser_request.cpp
     testsuite.cpp
 )
 
