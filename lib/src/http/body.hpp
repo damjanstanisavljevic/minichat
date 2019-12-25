@@ -1,5 +1,7 @@
 #pragma once
 
+#include <sstream>
+
 #include "../../include/json.hpp"
 
 namespace http
@@ -21,12 +23,17 @@ namespace http
         // default virtual destructor in case of inheritance
         virtual ~http_body() = default;
 
-        // constructor that takes a json or anything that is convertible to JSON
+        // constructor that takes a json or anything that is convertible to JSON except a string
         template<typename T,
                  typename = std::enable_if_t<std::is_constructible_v<nlohmann::json, T>> >
         explicit http_body(T && t) : _json{std::forward<T>(t)}
         {}
 
+        // constructor that takes a string
+        explicit http_body(std::string const & str)
+        {
+            _json = nlohmann::json::parse(str);
+        }
     };
 
 
