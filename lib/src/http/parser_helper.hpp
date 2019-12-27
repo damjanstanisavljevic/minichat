@@ -13,21 +13,21 @@ namespace http
 {
     namespace detail
     {
-        static std::string get_line(std::string & message)
+        inline std::string get_line(std::string & message)
         {
             auto line = message.substr(0, message.find_first_of("\r\n"));
             message.erase(0, line.size() + 2);
             return line;
         }
 
-        static http_body parse_body(std::string const & body)
+        inline http_body parse_body(std::string const & body)
         {
             if (body == "")
                 return http_body();
             return http_body(body);
         }
 
-        static http_version parse_version(std::string const & version)
+        inline http_version parse_version(std::string const & version)
         {
             if (!std::regex_match(version,
                                   std::regex("(HTTP/)([0-9])(.)([0-9])")))
@@ -39,7 +39,7 @@ namespace http
             return http_version(version);
         }
 
-        static std::vector<std::string> parse_header(std::string const & line)
+        inline std::vector<std::string> parse_header(std::string const & line)
         {
 
             auto delim = line.find_first_of(":");
